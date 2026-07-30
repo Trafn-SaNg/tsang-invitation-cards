@@ -1,5 +1,5 @@
 // CONFIG URL BACKEND API
-const API_BASE_URL = "https://tsang-invitation-cards.onrender.com/";
+const API_BASE_URL = "https://tsang-invitation-cards.onrender.com/api";
 
 let attendanceStatus = "Tham dự";
 let currentGuestName = "Con vợ thân mến";
