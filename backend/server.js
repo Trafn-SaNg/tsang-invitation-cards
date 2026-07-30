@@ -1,36 +1,44 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const fs = require("fs");
-const path = require("path");
+const mongoose = require("mongoose");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors()); // Cho phép FE gọi API từ Domain khác
+app.use(cors());
 app.use(express.json());
 
-const RSVP_FILE = path.join(__dirname, "data", "rsvp.json");
+// Kết nối MongoDB bằng biến môi trường MONGO_URI
+const MONGO_URI = process.env.MONGO_URI;
 
-// Đảm bảo thư mục data và file rsvp.json tồn tại
-if (!fs.existsSync(path.join(__dirname, "data"))) {
-  fs.mkdirSync(path.join(__dirname, "data"));
+if (MONGO_URI) {
+  mongoose
+    .connect(MONGO_URI)
+    .then(() => console.log("🍃 Đã kết nối thành công tới MongoDB Cloud!"))
+    .catch((err) => console.error("❌ Lỗi kết nối MongoDB:", err));
+} else {
+  console.log("⚠️ Cảnh báo: Chưa cấu hình biến MONGO_URI!");
 }
-if (!fs.existsSync(RSVP_FILE)) {
-  fs.writeFileSync(RSVP_FILE, JSON.stringify([], null, 2));
-}
 
-// ---------------- API ENDPOINTS ----------------
+// Schema MongoDB
+const rsvpSchema = new mongoose.Schema({
+  guestName: { type: String, required: true },
+  status: { type: String, default: "Tham dự" },
+  wishes: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+});
 
-// 1. API Lấy thông tin khách mời & Sự kiện
+const Rsvp = mongoose.model("Rsvp", rsvpSchema);
+
+// API 1: Lấy thông tin sự kiện
 app.get("/api/guest", (req, res) => {
   const guestName = req.query.to || "Con vợ thân mến";
-
   res.json({
     success: true,
     data: {
       guestName: guestName,
-      hostName: "Trần Sang",
+      hostName: "Trầnn Sang",
       title: "Đz PRO VIP SIÊU CẤP VÔ ĐỊCH VŨ TRỤ",
       degree: "Kỹỹỹỹỹỹ sư Công Nghệ Thông Tin 🥴",
       university: "Trường Đại học Công nghệ Đông Á",
@@ -42,49 +50,38 @@ app.get("/api/guest", (req, res) => {
   });
 });
 
-// 2. API Lưu phản hồi RSVP & Lời chúc của bạn bè
-app.post("/api/rsvp", (req, res) => {
-  const { guestName, attendanceStatus, wishes } = req.body;
-
-  if (!wishes) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Thiếu lời chúc rồi con vợ ơi!" });
-  }
-
-  const newResponse = {
-    id: Date.now(),
-    guestName: guestName || "Ẩn danh",
-    status: attendanceStatus || "Tham dự",
-    wishes: wishes,
-    createdAt: new Date().toLocaleString("vi-VN"),
-  };
-
+// API 2: Lưu lời chúc vào MongoDB
+app.post("/api/rsvp", async (req, res) => {
   try {
-    const fileData = fs.readFileSync(RSVP_FILE, "utf-8");
-    const rsvpList = JSON.parse(fileData);
+    const { guestName, attendanceStatus, wishes } = req.body;
+    if (!wishes)
+      return res
+        .status(400)
+        .json({ success: false, message: "Thiếu lời chúc!" });
 
-    rsvpList.push(newResponse);
-    fs.writeFileSync(RSVP_FILE, JSON.stringify(rsvpList, null, 2));
+    const newRsvp = new Rsvp({
+      guestName: guestName || "Ẩn danh",
+      status: attendanceStatus || "Tham dự",
+      wishes: wishes,
+    });
 
-    console.log("🎉 Lời chúc mới từ:", guestName);
+    await newRsvp.save();
     res.json({ success: true, message: "Lưu lời chúc thành công!" });
   } catch (error) {
-    console.error("Lỗi lưu file:", error);
-    res.status(500).json({ success: false, message: "Lỗi Server!" });
+    res.status(500).json({ success: false, message: "Lỗi lưu MongoDB!" });
   }
 });
 
-// 3. API Xem danh sách tất cả lời chúc đã gửi (Dành riêng cho bạn check)
-app.get("/api/rsvp-list", (req, res) => {
+// API 3: Xem danh sách lời chúc
+app.get("/api/rsvp-list", async (req, res) => {
   try {
-    const fileData = fs.readFileSync(RSVP_FILE, "utf-8");
-    res.json({ success: true, data: JSON.parse(fileData) });
+    const rsvpList = await Rsvp.find().sort({ createdAt: -1 });
+    res.json({ success: true, total: rsvpList.length, data: rsvpList });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Không đọc được dữ liệu" });
+    res.status(500).json({ success: false, message: "Lỗi lấy dữ liệu!" });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Backend Server running at: http://localhost:${PORT}`);
+  console.log(`🚀 Server đang chạy tại PORT: ${PORT}`);
 });
