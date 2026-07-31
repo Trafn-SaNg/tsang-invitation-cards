@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://trafn-sang-api.onrender.com/api";
+const API_BASE_URL = "https://tsang-invitation-cards.onrender.com/api";
 
 let attendanceStatus = "Tham dự";
 let currentGuestName = "Con vợ thân mến";
