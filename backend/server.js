@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// 1. CẤU HÌNH CORS CHO PHÉP TẤT CẢ TÊN MIỀN VÀ PHƯƠNG THỨC POST
 app.use(
   cors({
     origin: "*",
@@ -17,19 +16,23 @@ app.use(
 
 app.use(express.json());
 
-// 2. KẾT NỐI MONGODB
+// KẾT NỐI MONGODB AN TOÀN (KHÔNG LÀM CRASH SERVER)
 const MONGO_URI = process.env.MONGO_URI;
 
 if (MONGO_URI) {
   mongoose
     .connect(MONGO_URI)
     .then(() => console.log("🍃 Đã kết nối thành công tới MongoDB Cloud!"))
-    .catch((err) => console.error("❌ Lỗi kết nối MongoDB:", err));
+    .catch((err) =>
+      console.error("❌ Lỗi kết nối MongoDB (Server vẫn chạy):", err.message),
+    );
 } else {
-  console.log("⚠️ Cảnh báo: Chưa cấu hình biến MONGO_URI trên Render!");
+  console.error(
+    "⚠️ BÁO ĐỘNG: Chưa thêm biến MONGO_URI trong tab Environment của Render!",
+  );
 }
 
-// 3. SCHEMA MONGODB
+// SCHEMA
 const rsvpSchema = new mongoose.Schema({
   guestName: { type: String, default: "Con vợ ẩn danh" },
   status: { type: String, default: "Tham dự" },
@@ -39,14 +42,14 @@ const rsvpSchema = new mongoose.Schema({
 
 const Rsvp = mongoose.model("Rsvp", rsvpSchema);
 
-// 4. API LẤY THÔNG TIN SỰ KIỆN
+// API GUEST
 app.get("/api/guest", (req, res) => {
   const guestName = req.query.to || "Con vợ thân mến";
   res.json({
     success: true,
     data: {
       guestName: guestName,
-      hostName: "Trafn Sang",
+      hostName: "Trafn SaNg",
       title: "Đz PRO VIP SIÊU CẤP VÔ ĐỊCH VŨ TRỤ",
       degree: "Kĩ Sư Công Nghệ Thông Tin Hệ Đẳng Cấp 🥴",
       university: "Trường Đại học Công nghệ Đông Á",
@@ -58,9 +61,9 @@ app.get("/api/guest", (req, res) => {
   });
 });
 
-// 5. API POST RSVP (ĐÃ TỐI ƯU CỰC KỲ CHẮC CHẮN)
+// API RSVP
 app.post("/api/rsvp", async (req, res) => {
-  console.log("📥 [RECEIVE RSVP]:", req.body);
+  console.log("📥 Nhận dữ liệu RSVP:", req.body);
   try {
     const { guestName, attendanceStatus, wishes } = req.body;
 
@@ -71,7 +74,7 @@ app.post("/api/rsvp", async (req, res) => {
     });
 
     const savedData = await newRsvp.save();
-    console.log("✅ [SAVED MONGO]:", savedData);
+    console.log("✅ Đã lưu MongoDB thành công:", savedData);
 
     return res.status(200).json({
       success: true,
@@ -79,7 +82,7 @@ app.post("/api/rsvp", async (req, res) => {
       data: savedData,
     });
   } catch (error) {
-    console.error("❌ [MONGO ERROR]:", error);
+    console.error("❌ Lỗi khi lưu MongoDB:", error.message);
     return res.status(500).json({
       success: false,
       message: "Lỗi lưu MongoDB: " + error.message,
@@ -87,7 +90,7 @@ app.post("/api/rsvp", async (req, res) => {
   }
 });
 
-// 6. API XEM DANH SÁCH LỜI CHÚC
+// API RSVP LIST
 app.get("/api/rsvp-list", async (req, res) => {
   try {
     const rsvpList = await Rsvp.find().sort({ createdAt: -1 });
