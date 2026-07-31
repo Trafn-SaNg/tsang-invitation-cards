@@ -221,3 +221,20 @@ function closeLightbox() {
   modalImg.classList.add("scale-95");
   setTimeout(() => modal.classList.add("hidden"), 200);
 }
+
+// TỰ ĐỘNG RENDER 36 ẢNH KỶ NIỆM TỪ THƯ MỤC assets/album/
+window.addEventListener("DOMContentLoaded", () => {
+  const albumGrid = document.getElementById("album-grid");
+  if (albumGrid) {
+    let albumHTML = "";
+    for (let i = 1; i <= 36; i++) {
+      const imgPath = `assets/album/${i}.jpg`;
+      albumHTML += `
+        <div class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer" onclick="openLightbox('${imgPath}')">
+          <img src="${imgPath}" alt="Kỷ niệm ${i}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+        </div>
+      `;
+    }
+    albumGrid.innerHTML = albumHTML;
+  }
+});
