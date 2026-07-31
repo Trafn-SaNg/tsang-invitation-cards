@@ -38,7 +38,7 @@ app.get("/api/guest", (req, res) => {
     success: true,
     data: {
       guestName: guestName,
-      hostName: "Trầnn Sang",
+      hostName: "Trần Sang",
       title: "Đz PRO VIP SIÊU CẤP VÔ ĐỊCH VŨ TRỤ",
       degree: "Kỹỹỹỹỹỹ sư Công Nghệ Thông Tin 🥴",
       university: "Trường Đại học Công nghệ Đông Á",

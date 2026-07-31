@@ -1,5 +1,4 @@
-// CONFIG URL BACKEND API
-const API_BASE_URL = "https://tsang-invitation-cards.onrender.com/api";
+const API_BASE_URL = "https://trafn-sang-api.onrender.com/api";
 
 let attendanceStatus = "Tham dự";
 let currentGuestName = "Con vợ thân mến";
@@ -7,24 +6,38 @@ const music = document.getElementById("bg-music");
 const musicIcon = document.getElementById("music-icon");
 let isPlaying = false;
 
-// 1. FETCH DỮ LIỆU TỪ BACKEND
-window.addEventListener("DOMContentLoaded", async () => {
+// 1. TỰ ĐỘNG GIẢI MÃ TÊN NGƯỜI NHẬN TỪ URL PARAMETER TỨC THÌ
+function parseGuestNameFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
-  const guestQuery = urlParams.get("to") || "Con vợ thân mến";
+  const rawName = urlParams.get("to") || urlParams.get("name");
 
+  if (rawName) {
+    try {
+      // Decode ký tự tiếng Việt (Ví dụ: %20 -> khoảng trắng)
+      return decodeURIComponent(rawName);
+    } catch (e) {
+      return rawName;
+    }
+  }
+  return "Con vợ thân mến";
+}
+
+// Chạy ngay khi tải xong DOM
+window.addEventListener("DOMContentLoaded", async () => {
+  // Lấy tên tức thì từ URL và gán thẳng vào giao diện 1 & 2
+  currentGuestName = parseGuestNameFromURL();
+  document.getElementById("guest-name-preview").innerText = currentGuestName;
+  document.getElementById("guest-name").innerText = currentGuestName;
+
+  // Sau đó gọi Backend cập nhật thêm dữ liệu sự kiện
   try {
     const response = await fetch(
-      `${API_BASE_URL}/guest?to=${encodeURIComponent(guestQuery)}`,
+      `${API_BASE_URL}/guest?to=${encodeURIComponent(currentGuestName)}`,
     );
     const result = await response.json();
 
     if (result.success) {
       const data = result.data;
-      currentGuestName = data.guestName;
-
-      // Render dữ liệu nhận từ BE lên Giao diện
-      document.getElementById("guest-name-preview").innerText = data.guestName;
-      document.getElementById("guest-name").innerText = data.guestName;
       document.getElementById("host-name").innerHTML =
         `${data.hostName} <br><span class="text-base text-amber-400 font-bold">${data.title}</span>`;
       document.getElementById("host-degree").innerText = data.degree;
@@ -34,13 +47,11 @@ window.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("event-map").href = data.mapUrl;
     }
   } catch (error) {
-    console.error("Lỗi gọi API Backend:", error);
-    document.getElementById("guest-name-preview").innerText = guestQuery;
-    document.getElementById("guest-name").innerText = guestQuery;
+    console.log("Dùng dữ liệu mặc định FE");
   }
 });
 
-// 2. NHẠC NỀN & PHÁO HOA
+// 2. NHẠC NỀN & MỞ THIỆP
 function playMusic() {
   music
     .play()
@@ -49,7 +60,7 @@ function playMusic() {
       musicIcon.innerText = "🎵";
       musicIcon.classList.add("spin-music");
     })
-    .catch((e) => console.log("Blocked autoplay:", e));
+    .catch((e) => console.log("Autoplay blocked:", e));
 }
 
 function toggleMusic() {
@@ -68,7 +79,6 @@ function openInvitation() {
   document.getElementById("invitation-screen").classList.remove("hidden");
 
   playMusic();
-
   confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
 }
 
@@ -76,7 +86,7 @@ function setAttendance(status) {
   attendanceStatus = status;
 }
 
-// 3. GỬI LỜI CHÚC LÊN BACKEND
+// 3. GỬI LỜI CHÚC
 async function submitRSVP(event) {
   event.preventDefault();
   const wishesInput = document.getElementById("rsvp-wishes").value;
@@ -99,26 +109,56 @@ async function submitRSVP(event) {
       confetti({ particleCount: 80, spread: 70, origin: { y: 0.7 } });
     }
   } catch (error) {
-    alert("Không gửi được lời chúc, con vợ kiểm tra lại Backend nhé!");
+    document.getElementById("rsvp-form").classList.add("hidden");
+    document.getElementById("thank-you-msg").classList.remove("hidden");
   }
 }
 
-// 4. HIỆU ỨNG CLICK CHUỘT & STICKER TRAIL (PC ONLY)
-const clickEmojis = ["✨", "🎓", "🔥", "🥳", "💛", "🎉"];
+// 4. 📱 HIỆU ỨNG TẠO STICKER KHI VUỐT MÀN HÌNH ĐIỆN THOẠI (TOUCH MOVE)
+const trailEmojis = ["🎓", "✨", "📜", "🥳", "🔥", "⭐", "🎉"];
+
+function spawnStickerAt(x, y) {
+  const trailItem = document.createElement("div");
+  trailItem.className = "mouse-trail-sticker";
+  trailItem.innerText =
+    trailEmojis[Math.floor(Math.random() * trailEmojis.length)];
+  trailItem.style.left = `${x}px`;
+  trailItem.style.top = `${y}px`;
+
+  document.body.appendChild(trailItem);
+  setTimeout(() => trailItem.remove(), 800);
+}
+
+// Xử lý sự kiện VUỐT TAY trên ĐIỆN THOẠI
+let lastTouchX = 0,
+  lastTouchY = 0;
+window.addEventListener(
+  "touchmove",
+  (e) => {
+    const touch = e.touches[0];
+    const dist = Math.hypot(
+      touch.clientX - lastTouchX,
+      touch.clientY - lastTouchY,
+    );
+
+    if (dist > 25) {
+      // Phun sticker mỗi 25px vuốt
+      lastTouchX = touch.clientX;
+      lastTouchY = touch.clientY;
+      spawnStickerAt(touch.clientX, touch.clientY);
+    }
+  },
+  { passive: true },
+);
+
+// Xử lý CLICK TRÊN PC & TOUCH CHẠM ĐƠN
 window.addEventListener("click", (e) => {
-  if (e.target.closest("#music-btn")) return;
-
-  const particle = document.createElement("div");
-  particle.className = "click-particle";
-  particle.innerText =
-    clickEmojis[Math.floor(Math.random() * clickEmojis.length)];
-  particle.style.left = `${e.clientX}px`;
-  particle.style.top = `${e.clientY}px`;
-
-  document.body.appendChild(particle);
-  setTimeout(() => particle.remove(), 800);
+  if (e.target.closest("#music-btn") || e.target.closest("#lightbox-modal"))
+    return;
+  spawnStickerAt(e.clientX, e.clientY);
 });
 
+// 5. STICKER LINH VẬT ĐUỔI THEO CHUỘT (PC ONLY)
 const cursorSticker = document.getElementById("cursor-sticker");
 let mouseX = 0,
   mouseY = 0,
@@ -129,6 +169,14 @@ if (window.innerWidth > 768) {
   window.addEventListener("mousemove", (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
+
+    // Vệt chuột PC
+    const dist = Math.hypot(e.clientX - lastTouchX, e.clientY - lastTouchY);
+    if (dist > 30) {
+      lastTouchX = e.clientX;
+      lastTouchY = e.clientY;
+      spawnStickerAt(e.clientX, e.clientY);
+    }
   });
 
   function animateStickerFollower() {
@@ -142,28 +190,7 @@ if (window.innerWidth > 768) {
   }
   animateStickerFollower();
 
-  let lastX = 0,
-    lastY = 0;
-  const trailEmojis = ["🎓", "✨", "📜", "🥳", "🔥", "⭐"];
-
-  window.addEventListener("mousemove", (e) => {
-    const dist = Math.hypot(e.clientX - lastX, e.clientY - lastY);
-    if (dist > 30) {
-      lastX = e.clientX;
-      lastY = e.clientY;
-
-      const trailItem = document.createElement("div");
-      trailItem.className = "mouse-trail-sticker";
-      trailItem.innerText =
-        trailEmojis[Math.floor(Math.random() * trailEmojis.length)];
-      trailItem.style.left = `${e.clientX}px`;
-      trailItem.style.top = `${e.clientY}px`;
-
-      document.body.appendChild(trailItem);
-      setTimeout(() => trailItem.remove(), 900);
-    }
-  });
-
+  // Tilt Card 3D
   const cards = document.querySelectorAll(".tilt-card");
   cards.forEach((card) => {
     card.addEventListener("mousemove", (e) => {
@@ -177,4 +204,20 @@ if (window.innerWidth > 768) {
         "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
     });
   });
+}
+
+// 6. 🖼️ LIGHTBOX PHÓNG TO ẢNH FULL KÍCH THƯỚC GỐC
+function openLightbox(imageSrc) {
+  const modal = document.getElementById("lightbox-modal");
+  const modalImg = document.getElementById("lightbox-img");
+  modalImg.src = imageSrc;
+  modal.classList.remove("hidden");
+  setTimeout(() => modalImg.classList.remove("scale-95"), 10);
+}
+
+function closeLightbox() {
+  const modal = document.getElementById("lightbox-modal");
+  const modalImg = document.getElementById("lightbox-img");
+  modalImg.classList.add("scale-95");
+  setTimeout(() => modal.classList.add("hidden"), 200);
 }

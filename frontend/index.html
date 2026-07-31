@@ -13,7 +13,7 @@
       property="og:description"
       content="Trân trọng kính mời con vợ đến tham dự lễ tốt nghiệp và chung vui cùng Trafn Sang!"
     />
-    <meta property="og:image" content="assets/preview.jpg" />
+    <meta property="og:image" content="../assets/preview.jpg" />
     <meta property="og:type" content="website" />
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -35,12 +35,12 @@
       playsinline
       class="fixed inset-0 w-full h-full object-cover -z-20 opacity-50"
     >
-      <source src="assets/bgvideo.mp4" type="video/mp4" />
+      <source src="../assets/bgvideo.mp4" type="video/mp4" />
     </video>
 
     <div class="fixed inset-0 bg-slate-950/70 backdrop-blur-md -z-10"></div>
 
-    <!-- STICKER FOLLOW MOUSE -->
+    <!-- STICKER LINH VẬT ĐUỔI THEO CHUỘT (PC) -->
     <div
       id="cursor-sticker"
       class="fixed top-0 left-0 pointer-events-none z-50 text-3xl hidden md:block opacity-90 drop-shadow-[0_5px_10px_rgba(251,191,36,0.5)]"
@@ -63,7 +63,7 @@
 
     <!-- AUDIO -->
     <audio id="bg-music" loop preload="auto">
-      <source src="assets/bgmusic.mp3" type="audio/mpeg" />
+      <source src="../assets/bgmusic.mp3" type="audio/mpeg" />
     </audio>
 
     <!-- MUSIC TOGGLE BUTTON -->
@@ -76,7 +76,7 @@
     </button>
 
     <!-- MAIN CONTAINER -->
-    <div class="w-full max-w-lg mx-auto relative z-10">
+    <div class="w-full max-w-lg mx-auto relative z-10 my-6">
       <!-- SCREEN 1: ENVELOPE -->
       <div
         id="envelope-screen"
@@ -104,7 +104,7 @@
           <span
             id="guest-name-preview"
             class="text-amber-300 font-semibold underline underline-offset-4 decoration-amber-500/50"
-            >Đang tải...</span
+            >Con vợ thân mến</span
           >
         </p>
 
@@ -119,9 +119,10 @@
       <!-- SCREEN 2: INVITATION -->
       <div
         id="invitation-screen"
-        class="hidden tilt-card bg-slate-900/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-amber-500/40 fade-in"
+        class="hidden tilt-card bg-slate-900/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-amber-500/40 fade-in space-y-6"
       >
-        <div class="text-center border-b border-slate-800 pb-6 mb-6">
+        <!-- Header -->
+        <div class="text-center border-b border-slate-800 pb-6">
           <span class="text-5xl mb-2 block animate-bounce">🎓</span>
           <p
             class="text-amber-400 font-semibold uppercase tracking-widest text-xs mb-1"
@@ -135,31 +136,27 @@
           </h2>
         </div>
 
+        <!-- Lời nhắn -->
         <div
-          class="bg-slate-950/60 rounded-2xl p-4 border border-slate-800/80 mb-6 text-center"
+          class="bg-slate-950/60 rounded-2xl p-4 border border-slate-800/80 text-center"
         >
           <p class="text-slate-300 text-sm">
             Thân gửi
             <b id="guest-name" class="text-amber-300 text-base">...</b>,
           </p>
           <p class="text-slate-400 text-xs mt-2 leading-relaxed italic">
-            “Tôi đã trưởng thành từ trong đau khổ. Tôi đứng lên từ đống tro tàn,
-            từ một đống tro tàn nguội lạnh, như một bông hoa nở giữa sa mạc. Và
-            tôi có được ngày hôm nay là do sự may mắn, cộng thêm một sự kiêu
-            hãnh và kiên định. Không có dễ gì lung lay tôi đâu. Thấy tôi cười,
-            đừng tưởng tôi vui. Mà thấy tôi khóc, đừng nghĩ tôi buồn. Cái đầu
-            của tôi tỉnh như tỉnh ủy, không ai dẫn dắt tôi được hết. Tôi nghe
-            bao giờ cũng bằng con tim và lý trí. Tôi như một người phán quan,
-            tôi chiếu chỗ nào là chỗ đó banh xác”
+            “Tôi đã trưởng thành từ trong đau khổ. Tôi đứng lên từ đống tro
+            tàn...”
           </p>
         </div>
 
-        <div class="text-center mb-6">
+        <!-- Chủ nhân -->
+        <div class="text-center">
           <h3
             id="host-name"
             class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-amber-500"
           >
-            Trần Sang
+            Tran Sang
           </h3>
           <p id="host-degree" class="text-xs text-slate-300 mt-1 font-medium">
             ...
@@ -167,7 +164,8 @@
           <p id="host-university" class="text-xs text-slate-400">...</p>
         </div>
 
-        <div class="space-y-3 mb-6 text-sm">
+        <!-- Thời gian & Địa điểm -->
+        <div class="space-y-3 text-sm">
           <div
             class="flex items-start gap-3 bg-slate-800/50 p-3.5 rounded-2xl border border-slate-700/60"
           >
@@ -203,10 +201,186 @@
           id="event-map"
           href="#"
           target="_blank"
-          class="block text-center w-full bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 text-slate-200 text-xs font-bold py-3.5 rounded-2xl border border-slate-700 transition duration-300 mb-6"
+          class="block text-center w-full bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 text-slate-200 text-xs font-bold py-3.5 rounded-2xl border border-slate-700 transition duration-300"
         >
           🗺️ Xem Bản Đồ Chỉ Đường
         </a>
+
+        <!-- 📸 BOX ALBUM KỶ NIỆM (10 ẢNH / VIDEO) -->
+        <div class="pt-2">
+          <div class="text-center mb-3">
+            <p
+              class="text-amber-400 font-bold text-xs uppercase tracking-widest"
+            >
+              📸 ALBUM KỶ NIỆM 🎓
+            </p>
+            <p class="text-slate-400 text-[10px] mt-0.5">
+              Bấm vào ảnh để xem full kích thước gốc
+            </p>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+            <!-- Ảnh 1 -->
+            <div
+              class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
+              onclick="
+                openLightbox(
+                  'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000',
+                )
+              "
+            >
+              <img
+                src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=400"
+                alt="Kỷ niệm 1"
+                class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+              />
+            </div>
+
+            <!-- Ảnh 2 -->
+            <div
+              class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
+              onclick="
+                openLightbox(
+                  'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1000',
+                )
+              "
+            >
+              <img
+                src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=400"
+                alt="Kỷ niệm 2"
+                class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+              />
+            </div>
+
+            <!-- Ảnh 3 -->
+            <div
+              class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
+              onclick="
+                openLightbox(
+                  'https://images.unsplash.com/photo-1627556592933-ffe99c1cd9eb?q=80&w=1000',
+                )
+              "
+            >
+              <img
+                src="https://images.unsplash.com/photo-1627556592933-ffe99c1cd9eb?q=80&w=400"
+                alt="Kỷ niệm 3"
+                class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+              />
+            </div>
+
+            <!-- Ảnh 4 -->
+            <div
+              class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
+              onclick="
+                openLightbox(
+                  'https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=1000',
+                )
+              "
+            >
+              <img
+                src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=400"
+                alt="Kỷ niệm 4"
+                class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+              />
+            </div>
+
+            <!-- Ảnh 5 -->
+            <div
+              class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
+              onclick="
+                openLightbox(
+                  'https://images.unsplash.com/photo-1532649538693-f3a2ec1bf8bd?q=80&w=1000',
+                )
+              "
+            >
+              <img
+                src="https://images.unsplash.com/photo-1532649538693-f3a2ec1bf8bd?q=80&w=400"
+                alt="Kỷ niệm 5"
+                class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+              />
+            </div>
+
+            <!-- Ảnh 6 -->
+            <div
+              class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
+              onclick="
+                openLightbox(
+                  'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1000',
+                )
+              "
+            >
+              <img
+                src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=400"
+                alt="Kỷ niệm 6"
+                class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+              />
+            </div>
+
+            <!-- Ảnh 7 -->
+            <div
+              class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
+              onclick="
+                openLightbox(
+                  'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=1000',
+                )
+              "
+            >
+              <img
+                src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=400"
+                alt="Kỷ niệm 7"
+                class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+              />
+            </div>
+
+            <!-- Ảnh 8 -->
+            <div
+              class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
+              onclick="
+                openLightbox(
+                  'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=1000',
+                )
+              "
+            >
+              <img
+                src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=400"
+                alt="Kỷ niệm 8"
+                class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+              />
+            </div>
+
+            <!-- Ảnh 9 -->
+            <div
+              class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
+              onclick="
+                openLightbox(
+                  'https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1000',
+                )
+              "
+            >
+              <img
+                src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=400"
+                alt="Kỷ niệm 9"
+                class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+              />
+            </div>
+
+            <!-- Ảnh 10 -->
+            <div
+              class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer col-span-2 sm:col-span-1"
+              onclick="
+                openLightbox(
+                  'https://images.unsplash.com/photo-1492538368677-f6e0afe31dcc?q=80&w=1000',
+                )
+              "
+            >
+              <img
+                src="https://images.unsplash.com/photo-1492538368677-f6e0afe31dcc?q=80&w=400"
+                alt="Kỷ niệm 10"
+                class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+              />
+            </div>
+          </div>
+        </div>
 
         <!-- RSVP FORM -->
         <form
@@ -253,9 +427,28 @@
           id="thank-you-msg"
           class="hidden text-center text-xs text-emerald-400 font-bold mt-3 animate-pulse"
         >
-          ✅ Cảm ơn bạn! Lời chúc đã được gửi thành công đến Trần Sang!
+          ✅ Cảm ơn bạn! Lời chúc đã được gửi thành công!
         </p>
       </div>
+    </div>
+
+    <!-- 🔍 MODAL LIGHTBOX XEM ẢNH FULL KÍCH THƯỚC GỐC -->
+    <div
+      id="lightbox-modal"
+      class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg hidden flex items-center justify-center p-4"
+      onclick="closeLightbox()"
+    >
+      <button
+        class="absolute top-5 right-5 text-slate-300 hover:text-white text-3xl font-bold z-10"
+      >
+        &times;
+      </button>
+      <img
+        id="lightbox-img"
+        src=""
+        alt="Full view"
+        class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl transition-transform duration-300 scale-95"
+      />
     </div>
 
     <script src="js/main.js"></script>
