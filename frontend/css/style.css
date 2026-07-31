@@ -84,7 +84,9 @@ body {
 
 .tilt-card {
   transition:
-    transform 0.2s ease-out,
+    transform 0.3s ease,
     box-shadow 0.3s ease;
-  transform-style: preserve-3d;
+}
+.tilt-card:hover {
+  transform: translateY(-5px); /* Nhấc nhẹ thẻ lên 5px khi di chuột vào */
 }

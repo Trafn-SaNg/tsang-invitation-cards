@@ -83,31 +83,48 @@ function setAttendance(status) {
   attendanceStatus = status;
 }
 
-// 3. GỬI LỜI CHÚC
+// 3. GỬI LỜI CHÚC VỀ BACKEND MONGO
 async function submitRSVP(event) {
   event.preventDefault();
   const wishesInput = document.getElementById("rsvp-wishes").value;
 
+  // Lấy chính xác tên người nhận hiện tại
+  const guestNameToSend = currentGuestName || parseGuestNameFromURL();
+
+  console.log("🚀 Đang gửi dữ liệu RSVP:", {
+    guestName: guestNameToSend,
+    attendanceStatus: attendanceStatus,
+    wishes: wishesInput,
+  });
+
   try {
     const response = await fetch(`${API_BASE_URL}/rsvp`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
-        guestName: currentGuestName,
+        guestName: guestNameToSend,
         attendanceStatus: attendanceStatus,
         wishes: wishesInput,
       }),
     });
 
     const result = await response.json();
+    console.log("📩 Phản hồi từ Server Render:", result);
+
     if (result.success) {
       document.getElementById("rsvp-form").classList.add("hidden");
       document.getElementById("thank-you-msg").classList.remove("hidden");
       confetti({ particleCount: 80, spread: 70, origin: { y: 0.7 } });
+    } else {
+      alert("❌ Lỗi từ Server: " + result.message);
     }
   } catch (error) {
-    document.getElementById("rsvp-form").classList.add("hidden");
-    document.getElementById("thank-you-msg").classList.remove("hidden");
+    console.error("❌ Lỗi kết nối Server:", error);
+    alert(
+      "⚠️ Render Server đang khởi động lại (khởi động lạnh). Vui lòng bấm gửi lại sau 10 giây nhé!",
+    );
   }
 }
 
@@ -156,7 +173,9 @@ window.addEventListener("click", (e) => {
   spawnStickerAt(e.clientX, e.clientY);
 });
 
-// 5. STICKER LINH VẬT ĐUỔI THEO CHUỘT (PC ONLY)
+// =========================================================================
+// 5. STICKER LINH VẬT & HIỆU ỨNG TILT 3D NHẸ NHÀNG (KHÔNG BỊ MÉO THIỆP)
+// =========================================================================
 const cursorSticker = document.getElementById("cursor-sticker");
 let mouseX = 0,
   mouseY = 0,
@@ -182,19 +201,32 @@ if (window.innerWidth > 768) {
     const deltaX = mouseX - stickerX;
     const rotateAngle = Math.max(-25, Math.min(25, deltaX * 0.8));
 
-    cursorSticker.style.transform = `translate3d(${stickerX + 15}px, ${stickerY + 15}px, 0) rotate(${rotateAngle}deg)`;
+    if (cursorSticker) {
+      cursorSticker.style.transform = `translate3d(${stickerX + 15}px, ${stickerY + 15}px, 0) rotate(${rotateAngle}deg)`;
+    }
     requestAnimationFrame(animateStickerFollower);
   }
   animateStickerFollower();
 
+  // 🕹️ TILT CARD 3D ĐÃ KHÓA GÓC XOAY (TỐI ĐA 4 ĐỘ - KHÔNG MÉO KHUNG)
   const cards = document.querySelectorAll(".tilt-card");
   cards.forEach((card) => {
     card.addEventListener("mousemove", (e) => {
       const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      card.style.transform = `perspective(1000px) rotateX(${-y / 25}deg) rotateY(${x / 25}deg) scale3d(1.02, 1.02, 1.02)`;
+
+      // Tính vị trí chuột tương đối từ -0.5 đến 0.5 từ tâm thẻ
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+      // Giới hạn góc xoay tối đa chỉ 4 độ (Cực kỳ nhẹ nhàng)
+      const maxTilt = 4;
+      const rotateX = (-y * maxTilt).toFixed(2);
+      const rotateY = (x * maxTilt).toFixed(2);
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
     });
+
+    // Reset phẳng hoàn toàn khi chuột rời khỏi khung
     card.addEventListener("mouseleave", () => {
       card.style.transform =
         "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";

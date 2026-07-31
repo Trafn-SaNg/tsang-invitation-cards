@@ -18,3 +18,11 @@ https://tsang-invitation-cards.onrender.com/
             của tôi tỉnh như tỉnh ủy, không ai dẫn dắt tôi được hết. Tôi nghe
             bao giờ cũng bằng con tim và lý trí. Tôi như một người phán quan,
             tôi chiếu chỗ nào là chỗ đó banh xác”
+
+## đường dẫn
+
+https://trafn-sang.github.io/tsang-invitation-cards/frontend/?to= <tên người nhận>
+
+# xem lời chúc, accept or reject
+
+https://tsang-invitation-cards.onrender.com/api/rsvp-list
