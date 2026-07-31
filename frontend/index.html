@@ -77,7 +77,7 @@
 
     <!-- MAIN CONTAINER -->
     <div class="w-full max-w-lg mx-auto relative z-10 my-6">
-      <!-- SCREEN 1: ENVELOPE -->
+      <!-- ================= SCREEN 1: ENVELOPE (PHONG THƯ) ================= -->
       <div
         id="envelope-screen"
         class="tilt-card bg-slate-900/80 backdrop-blur-xl rounded-3xl p-8 text-center shadow-[0_10px_40px_rgba(0,0,0,0.5)] border border-amber-500/30 hover:border-amber-400 relative overflow-hidden transition-all duration-300 group"
@@ -116,111 +116,171 @@
         </button>
       </div>
 
-      <!-- SCREEN 2: INVITATION -->
-      <div
-        id="invitation-screen"
-        class="hidden tilt-card bg-slate-900/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-amber-500/40 fade-in space-y-6"
-      >
-        <!-- Header -->
-        <div class="text-center border-b border-slate-800 pb-6">
-          <span class="text-5xl mb-2 block animate-bounce">🎓</span>
-          <p
-            class="text-amber-400 font-semibold uppercase tracking-widest text-xs mb-1"
-          >
-            Lễ Tốt Nghiệp
-          </p>
-          <h2
-            class="text-3xl font-bold font-serif-custom bg-gradient-to-r from-amber-200 to-amber-500 bg-clip-text text-transparent"
-          >
-            THIỆP MỜI
-          </h2>
-        </div>
-
-        <!-- Lời nhắn -->
+      <!-- ================= SCREEN 2: NỘI DUNG SAU KHI MỞ THIỆP ================= -->
+      <div id="invitation-screen" class="hidden space-y-6 fade-in">
+        <!-- KHUNG 1: THIỆP MỜI CHÍNH & RSVP -->
         <div
-          class="bg-slate-950/60 rounded-2xl p-4 border border-slate-800/80 text-center"
+          class="tilt-card bg-slate-900/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-amber-500/40 space-y-6"
         >
-          <p class="text-slate-300 text-sm">
-            Thân gửi
-            <b id="guest-name" class="text-amber-300 text-base">...</b>,
-          </p>
-          <p class="text-slate-400 text-xs mt-2 leading-relaxed italic">
-            “Tôi đã trưởng thành từ trong đau khổ. Tôi đứng lên từ đống tro
-            tàn...”
-          </p>
-        </div>
-
-        <!-- Chủ nhân -->
-        <div class="text-center">
-          <h3
-            id="host-name"
-            class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-amber-500"
-          >
-            Tran Sang
-          </h3>
-          <p id="host-degree" class="text-xs text-slate-300 mt-1 font-medium">
-            ...
-          </p>
-          <p id="host-university" class="text-xs text-slate-400">...</p>
-        </div>
-
-        <!-- Thời gian & Địa điểm -->
-        <div class="space-y-3 text-sm">
-          <div
-            class="flex items-start gap-3 bg-slate-800/50 p-3.5 rounded-2xl border border-slate-700/60"
-          >
-            <span class="text-2xl">📅</span>
-            <div>
-              <p class="font-semibold text-slate-200">Thời gian</p>
-              <p
-                id="event-time"
-                class="text-xs text-amber-300/90 font-medium mt-0.5"
-              >
-                ...
-              </p>
-            </div>
-          </div>
-
-          <div
-            class="flex items-start gap-3 bg-slate-800/50 p-3.5 rounded-2xl border border-slate-700/60"
-          >
-            <span class="text-2xl">📍</span>
-            <div>
-              <p class="font-semibold text-slate-200">Địa điểm</p>
-              <p
-                id="event-location"
-                class="text-xs text-slate-300 mt-0.5 leading-snug"
-              >
-                ...
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <a
-          id="event-map"
-          href="#"
-          target="_blank"
-          class="block text-center w-full bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 text-slate-200 text-xs font-bold py-3.5 rounded-2xl border border-slate-700 transition duration-300"
-        >
-          🗺️ Xem Bản Đồ Chỉ Đường
-        </a>
-
-        <!-- 📸 BOX ALBUM KỶ NIỆM (10 ẢNH / VIDEO) -->
-        <div class="pt-2">
-          <div class="text-center mb-3">
+          <!-- Header -->
+          <div class="text-center border-b border-slate-800 pb-6">
+            <span class="text-5xl mb-2 block animate-bounce">🎓</span>
             <p
-              class="text-amber-400 font-bold text-xs uppercase tracking-widest"
+              class="text-amber-400 font-semibold uppercase tracking-widest text-xs mb-1"
             >
-              📸 ALBUM KỶ NIỆM 🎓
+              Lễ Tốt Nghiệp
             </p>
-            <p class="text-slate-400 text-[10px] mt-0.5">
-              Bấm vào ảnh để xem full kích thước gốc
+            <h2
+              class="text-3xl font-bold font-serif-custom bg-gradient-to-r from-amber-200 to-amber-500 bg-clip-text text-transparent"
+            >
+              THIỆP MỜI
+            </h2>
+          </div>
+
+          <!-- Lời nhắn -->
+          <div
+            class="bg-slate-950/60 rounded-2xl p-4 border border-slate-800/80 text-center"
+          >
+            <p class="text-slate-300 text-sm">
+              Thân gửi
+              <b id="guest-name" class="text-amber-300 text-base">...</b>,
+            </p>
+            <p class="text-slate-400 text-xs mt-2 leading-relaxed italic">
+              “Tôi đã trưởng thành từ trong đau khổ. Tôi đứng lên từ đống tro
+              tàn, từ một đống tro tàn nguội lạnh, như một bông hoa nở giữa sa
+              mạc. Và tôi có được ngày hôm nay là do sự may mắn, cộng thêm một
+              sự kiêu hãnh và kiên định. Không có dễ gì lung lay tôi đâu. Thấy
+              tôi cười, đừng tưởng tôi vui. Mà thấy tôi khóc, đừng nghĩ tôi
+              buồn. Cái đầu của tôi tỉnh như tỉnh ủy, không ai dẫn dắt tôi được
+              hết. Tôi nghe bao giờ cũng bằng con tim và lý trí. Tôi như một
+              người phán quan, tôi chiếu chỗ nào là chỗ đó banh xác”
             </p>
           </div>
 
+          <!-- Chủ nhân -->
+          <div class="text-center">
+            <h3
+              id="host-name"
+              class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-amber-500"
+            >
+              Tran Sang
+            </h3>
+            <p id="host-degree" class="text-xs text-slate-300 mt-1 font-medium">
+              ...
+            </p>
+            <p id="host-university" class="text-xs text-slate-400">...</p>
+          </div>
+
+          <!-- Thời gian & Địa điểm -->
+          <div class="space-y-3 text-sm">
+            <div
+              class="flex items-start gap-3 bg-slate-800/50 p-3.5 rounded-2xl border border-slate-700/60"
+            >
+              <span class="text-2xl">📅</span>
+              <div>
+                <p class="font-semibold text-slate-200">Thời gian</p>
+                <p
+                  id="event-time"
+                  class="text-xs text-amber-300/90 font-medium mt-0.5"
+                >
+                  ...
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="flex items-start gap-3 bg-slate-800/50 p-3.5 rounded-2xl border border-slate-700/60"
+            >
+              <span class="text-2xl">📍</span>
+              <div>
+                <p class="font-semibold text-slate-200">Địa điểm</p>
+                <p
+                  id="event-location"
+                  class="text-xs text-slate-300 mt-0.5 leading-snug"
+                >
+                  ...
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nút Bản Đồ -->
+          <a
+            id="event-map"
+            href="#"
+            target="_blank"
+            class="block text-center w-full bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 text-slate-200 text-xs font-bold py-3.5 rounded-2xl border border-slate-700 transition duration-300"
+          >
+            🗺️ Xem Bản Đồ Chỉ Đường
+          </a>
+
+          <!-- RSVP FORM -->
+          <form
+            id="rsvp-form"
+            onsubmit="submitRSVP(event)"
+            class="space-y-3 bg-slate-950/70 p-4 rounded-2xl border border-slate-800"
+          >
+            <p
+              class="text-xs font-bold text-amber-400 text-center tracking-wider"
+            >
+              XÁC NHẬN THAM DỰ
+            </p>
+
+            <div>
+              <input
+                type="text"
+                id="rsvp-wishes"
+                placeholder="Gửi lời chúc cho tsang ở đêy..."
+                required
+                class="w-full bg-slate-900 border border-slate-700 focus:border-amber-500 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none transition"
+              />
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <button
+                type="submit"
+                onclick="setAttendance('Tham dự')"
+                class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold text-xs py-3 rounded-xl transition"
+              >
+                Sẽ Đến <br />
+                Ngóng bữa giờ 🎉
+              </button>
+              <button
+                type="submit"
+                onclick="setAttendance('Bận')"
+                class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs py-3 rounded-xl transition"
+              >
+                Rất Tiếc Bận 🥵
+              </button>
+            </div>
+          </form>
+
+          <p
+            id="thank-you-msg"
+            class="hidden text-center text-xs text-emerald-400 font-bold mt-3 animate-pulse"
+          >
+            ✅ Cảm ơn bạn! Lời chúc đã được gửi thành công!
+          </p>
+        </div>
+
+        <!-- KHUNG 2: KHU VỰC ALBUM KỶ NIỆM RIÊNG BIỆT (NẰM HOÀN TOÀN BÊN DƯỚI THIỆP) -->
+        <div
+          class="tilt-card bg-slate-900/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.5)] border border-slate-700/80 hover:border-amber-500/40 transition duration-300"
+        >
+          <div class="text-center mb-5">
+            <span class="text-3xl mb-1 block">📸</span>
+            <h3
+              class="text-lg font-bold bg-gradient-to-r from-amber-200 to-amber-500 bg-clip-text text-transparent uppercase tracking-wider"
+            >
+              MEMORISES ALBUM 🎓
+            </h3>
+            <p class="text-slate-400 text-[11px] mt-1">
+              KEEP UNIVERSITY MEMORIES FOREVER
+            </p>
+          </div>
+
+          <!-- Lưới 10 Ảnh Kỷ Niệm -->
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-            <!-- Ảnh 1 -->
             <div
               class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
               onclick="
@@ -236,13 +296,10 @@
               />
             </div>
 
-            <!-- Ảnh 2 -->
             <div
               class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
               onclick="
-                openLightbox(
-                  'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1000',
-                )
+                openLightbox('https://photos.app.goo.gl/MQTz9cg1z9bDxS847')
               "
             >
               <img
@@ -252,13 +309,10 @@
               />
             </div>
 
-            <!-- Ảnh 3 -->
             <div
               class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
               onclick="
-                openLightbox(
-                  'https://images.unsplash.com/photo-1627556592933-ffe99c1cd9eb?q=80&w=1000',
-                )
+                openLightbox('https://photos.app.goo.gl/MQTz9cg1z9bDxS847')
               "
             >
               <img
@@ -268,7 +322,6 @@
               />
             </div>
 
-            <!-- Ảnh 4 -->
             <div
               class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
               onclick="
@@ -284,7 +337,6 @@
               />
             </div>
 
-            <!-- Ảnh 5 -->
             <div
               class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
               onclick="
@@ -300,7 +352,6 @@
               />
             </div>
 
-            <!-- Ảnh 6 -->
             <div
               class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
               onclick="
@@ -316,7 +367,6 @@
               />
             </div>
 
-            <!-- Ảnh 7 -->
             <div
               class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
               onclick="
@@ -332,7 +382,6 @@
               />
             </div>
 
-            <!-- Ảnh 8 -->
             <div
               class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
               onclick="
@@ -348,7 +397,6 @@
               />
             </div>
 
-            <!-- Ảnh 9 -->
             <div
               class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer"
               onclick="
@@ -364,7 +412,6 @@
               />
             </div>
 
-            <!-- Ảnh 10 -->
             <div
               class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer col-span-2 sm:col-span-1"
               onclick="
@@ -381,54 +428,6 @@
             </div>
           </div>
         </div>
-
-        <!-- RSVP FORM -->
-        <form
-          id="rsvp-form"
-          onsubmit="submitRSVP(event)"
-          class="space-y-3 bg-slate-950/70 p-4 rounded-2xl border border-slate-800"
-        >
-          <p
-            class="text-xs font-bold text-amber-400 text-center tracking-wider"
-          >
-            XÁC NHẬN THAM DỰ
-          </p>
-
-          <div>
-            <input
-              type="text"
-              id="rsvp-wishes"
-              placeholder="Gửi lời chúc cho tsang ở đêy..."
-              required
-              class="w-full bg-slate-900 border border-slate-700 focus:border-amber-500 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none transition"
-            />
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <button
-              type="submit"
-              onclick="setAttendance('Tham dự')"
-              class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold text-xs py-3 rounded-xl transition"
-            >
-              Sẽ Đến <br />
-              Ngóng bữa giờ 🎉
-            </button>
-            <button
-              type="submit"
-              onclick="setAttendance('Bận')"
-              class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs py-3 rounded-xl transition"
-            >
-              Rất Tiếc Bận 🥵
-            </button>
-          </div>
-        </form>
-
-        <p
-          id="thank-you-msg"
-          class="hidden text-center text-xs text-emerald-400 font-bold mt-3 animate-pulse"
-        >
-          ✅ Cảm ơn bạn! Lời chúc đã được gửi thành công!
-        </p>
       </div>
     </div>
 
