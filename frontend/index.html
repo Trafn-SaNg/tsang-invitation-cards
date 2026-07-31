@@ -35,7 +35,7 @@
       playsinline
       class="fixed inset-0 w-full h-full object-cover -z-20 opacity-50"
     >
-      <source src="../assets/bgvideo.mp4" type="video/mp4" />
+      <source src="assets/bgvideo.mp4" type="video/mp4" />
     </video>
 
     <div class="fixed inset-0 bg-slate-950/70 backdrop-blur-md -z-10"></div>
@@ -63,7 +63,7 @@
 
     <!-- AUDIO -->
     <audio id="bg-music" loop preload="auto">
-      <source src="../assets/bgmusic.mp3" type="audio/mpeg" />
+      <source src="assets/bgmusic.mp3" type="audio/mpeg" />
     </audio>
 
     <!-- MUSIC TOGGLE BUTTON -->
@@ -287,7 +287,6 @@
             </p>
           </div>
 
-          <!-- Lưới 10 Ảnh Kỷ Niệm -->
           <!-- Lưới 36 Ảnh Kỷ Niệm Tự Động -->
           <div id="album-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
             <!-- 36 ảnh sẽ tự động hiển thị ở đây qua JS -->
@@ -296,22 +295,53 @@
       </div>
     </div>
 
-    <!-- 🔍 MODAL LIGHTBOX XEM ẢNH FULL KÍCH THƯỚC GỐC -->
+    <!-- 🔍 MODAL LIGHTBOX XEM ẢNH SLIDER (NÚT BẤM + PHÍM + VUỐT MOBILE) -->
     <div
       id="lightbox-modal"
-      class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg hidden flex items-center justify-center p-4"
+      class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg hidden flex items-center justify-center p-4 select-none"
       onclick="closeLightbox()"
     >
+      <!-- Nút Đóng (Góc Trên Phải) -->
       <button
-        class="absolute top-5 right-5 text-slate-300 hover:text-white text-3xl font-bold z-10"
+        onclick="closeLightbox()"
+        class="absolute top-5 right-5 text-slate-300 hover:text-white text-3xl font-bold z-20 p-2 focus:outline-none"
       >
         &times;
       </button>
+
+      <!-- Bộ Đếm Số Ảnh (Góc Trên Trái) -->
+      <div
+        id="lightbox-counter"
+        class="absolute top-6 left-6 text-slate-300 font-semibold text-xs sm:text-sm bg-slate-800/80 px-3.5 py-1.5 rounded-full border border-slate-700 z-20 shadow-lg"
+      >
+        1 / 36
+      </div>
+
+      <!-- Nút Chuyển Ảnh Trái (PREV) -->
+      <button
+        onclick="prevImage(event)"
+        class="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 text-white bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 border border-slate-700/80 p-3 sm:p-4 rounded-full transition-all duration-200 z-20 shadow-lg focus:outline-none"
+        title="Ảnh trước (Mũi tên trái)"
+      >
+        ❮
+      </button>
+
+      <!-- Nút Chuyển Ảnh Phải (NEXT) -->
+      <button
+        onclick="nextImage(event)"
+        class="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 text-white bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 border border-slate-700/80 p-3 sm:p-4 rounded-full transition-all duration-200 z-20 shadow-lg focus:outline-none"
+        title="Ảnh tiếp (Mũi tên phải)"
+      >
+        ❯
+      </button>
+
+      <!-- Hiển Thị Ảnh Gốc -->
       <img
         id="lightbox-img"
         src=""
         alt="Full view"
-        class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl transition-transform duration-300 scale-95"
+        onclick="event.stopPropagation()"
+        class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl transition-all duration-200 scale-95"
       />
     </div>
 

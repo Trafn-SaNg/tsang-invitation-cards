@@ -13,7 +13,6 @@ function parseGuestNameFromURL() {
 
   if (rawName) {
     try {
-      // Decode ký tự tiếng Việt (Ví dụ: %20 -> khoảng trắng)
       return decodeURIComponent(rawName);
     } catch (e) {
       return rawName;
@@ -24,12 +23,10 @@ function parseGuestNameFromURL() {
 
 // Chạy ngay khi tải xong DOM
 window.addEventListener("DOMContentLoaded", async () => {
-  // Lấy tên tức thì từ URL và gán thẳng vào giao diện 1 & 2
   currentGuestName = parseGuestNameFromURL();
   document.getElementById("guest-name-preview").innerText = currentGuestName;
   document.getElementById("guest-name").innerText = currentGuestName;
 
-  // Sau đó gọi Backend cập nhật thêm dữ liệu sự kiện
   try {
     const response = await fetch(
       `${API_BASE_URL}/guest?to=${encodeURIComponent(currentGuestName)}`,
@@ -129,12 +126,15 @@ function spawnStickerAt(x, y) {
   setTimeout(() => trailItem.remove(), 800);
 }
 
-// Xử lý sự kiện VUỐT TAY trên ĐIỆN THOẠI
 let lastTouchX = 0,
   lastTouchY = 0;
 window.addEventListener(
   "touchmove",
   (e) => {
+    // Không tạo sticker nếu đang mở Lightbox
+    const modal = document.getElementById("lightbox-modal");
+    if (modal && !modal.classList.contains("hidden")) return;
+
     const touch = e.touches[0];
     const dist = Math.hypot(
       touch.clientX - lastTouchX,
@@ -142,7 +142,6 @@ window.addEventListener(
     );
 
     if (dist > 25) {
-      // Phun sticker mỗi 25px vuốt
       lastTouchX = touch.clientX;
       lastTouchY = touch.clientY;
       spawnStickerAt(touch.clientX, touch.clientY);
@@ -151,7 +150,6 @@ window.addEventListener(
   { passive: true },
 );
 
-// Xử lý CLICK TRÊN PC & TOUCH CHẠM ĐƠN
 window.addEventListener("click", (e) => {
   if (e.target.closest("#music-btn") || e.target.closest("#lightbox-modal"))
     return;
@@ -170,7 +168,6 @@ if (window.innerWidth > 768) {
     mouseX = e.clientX;
     mouseY = e.clientY;
 
-    // Vệt chuột PC
     const dist = Math.hypot(e.clientX - lastTouchX, e.clientY - lastTouchY);
     if (dist > 30) {
       lastTouchX = e.clientX;
@@ -190,7 +187,6 @@ if (window.innerWidth > 768) {
   }
   animateStickerFollower();
 
-  // Tilt Card 3D
   const cards = document.querySelectorAll(".tilt-card");
   cards.forEach((card) => {
     card.addEventListener("mousemove", (e) => {
@@ -206,31 +202,124 @@ if (window.innerWidth > 768) {
   });
 }
 
-// 6. 🖼️ LIGHTBOX PHÓNG TO ẢNH FULL KÍCH THƯỚC GỐC
-function openLightbox(imageSrc) {
-  const modal = document.getElementById("lightbox-modal");
+// =========================================================================
+// 6. 🖼️ LIGHTBOX SLIDER XEM ẢNH NÂNG CAO (NÚT BẤM, PHÍM MŨI TÊN, VUỐT ĐIỆN THOẠI)
+// =========================================================================
+let currentImageIndex = 1;
+const TOTAL_IMAGES = 36;
+
+function getImagePath(index) {
+  return `assets/album/${index}.jpg`;
+}
+
+function updateLightboxDisplay() {
   const modalImg = document.getElementById("lightbox-img");
-  modalImg.src = imageSrc;
+  const counterText = document.getElementById("lightbox-counter");
+
+  if (modalImg) {
+    modalImg.style.opacity = "0.3";
+    modalImg.src = getImagePath(currentImageIndex);
+    setTimeout(() => {
+      modalImg.style.opacity = "1";
+    }, 50);
+  }
+
+  if (counterText) {
+    counterText.innerText = `${currentImageIndex} / ${TOTAL_IMAGES}`;
+  }
+}
+
+function openLightbox(index) {
+  currentImageIndex = typeof index === "number" ? index : parseInt(index) || 1;
+  const modal = document.getElementById("lightbox-modal");
+  updateLightboxDisplay();
+
   modal.classList.remove("hidden");
-  setTimeout(() => modalImg.classList.remove("scale-95"), 10);
+  setTimeout(() => {
+    const modalImg = document.getElementById("lightbox-img");
+    if (modalImg) modalImg.classList.remove("scale-95");
+  }, 10);
 }
 
 function closeLightbox() {
   const modal = document.getElementById("lightbox-modal");
   const modalImg = document.getElementById("lightbox-img");
-  modalImg.classList.add("scale-95");
+  if (modalImg) modalImg.classList.add("scale-95");
   setTimeout(() => modal.classList.add("hidden"), 200);
 }
 
-// TỰ ĐỘNG RENDER 36 ẢNH KỶ NIỆM TỪ THƯ MỤC assets/album/
+function nextImage(e) {
+  if (e) e.stopPropagation();
+  currentImageIndex =
+    currentImageIndex >= TOTAL_IMAGES ? 1 : currentImageIndex + 1;
+  updateLightboxDisplay();
+}
+
+function prevImage(e) {
+  if (e) e.stopPropagation();
+  currentImageIndex =
+    currentImageIndex <= 1 ? TOTAL_IMAGES : currentImageIndex - 1;
+  updateLightboxDisplay();
+}
+
+// A. ĐIỀU HƯỚNG BẰNG BÀN PHÍM (PC)
+window.addEventListener("keydown", (e) => {
+  const modal = document.getElementById("lightbox-modal");
+  if (!modal || modal.classList.contains("hidden")) return;
+
+  if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+    nextImage();
+  } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+    prevImage();
+  } else if (e.key === "Escape") {
+    closeLightbox();
+  }
+});
+
+// B. ĐIỀU HƯỚNG BẰNG VUỐT TAY TRÊN ĐIỆN THOẠI (SWIPE MOBILE)
+let touchStartX = 0;
+let touchEndX = 0;
+
+window.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("lightbox-modal");
+  if (modal) {
+    modal.addEventListener(
+      "touchstart",
+      (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      },
+      { passive: true },
+    );
+
+    modal.addEventListener(
+      "touchend",
+      (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      },
+      { passive: true },
+    );
+  }
+});
+
+function handleSwipe() {
+  const swipeThreshold = 40; // Khoảng cách tối thiểu để nhận diện vuốt
+  if (touchEndX < touchStartX - swipeThreshold) {
+    nextImage(); // Vuốt sang trái -> Ảnh tiếp theo
+  } else if (touchEndX > touchStartX + swipeThreshold) {
+    prevImage(); // Vuốt sang phải -> Ảnh trước đó
+  }
+}
+
+// C. TỰ ĐỘNG RENDER 36 ẢNH KỶ NIỆM TỪ THƯ MỤC assets/album/
 window.addEventListener("DOMContentLoaded", () => {
   const albumGrid = document.getElementById("album-grid");
   if (albumGrid) {
     let albumHTML = "";
-    for (let i = 1; i <= 36; i++) {
-      const imgPath = `assets/album/${i}.jpg`;
+    for (let i = 1; i <= TOTAL_IMAGES; i++) {
+      const imgPath = getImagePath(i);
       albumHTML += `
-        <div class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer" onclick="openLightbox('${imgPath}')">
+        <div class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer" onclick="openLightbox(${i})">
           <img src="${imgPath}" alt="Kỷ niệm ${i}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
         </div>
       `;
