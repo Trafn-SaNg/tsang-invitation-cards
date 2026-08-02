@@ -1,7 +1,7 @@
 const API_BASE_URL = "https://tsang-invitation-cards.onrender.com/api";
 
 let attendanceStatus = "Tham dự";
-let currentGuestName = "Con vợ thân mến";
+let currentGuestName = "Con vợ";
 const music = document.getElementById("bg-music");
 const musicIcon = document.getElementById("music-icon");
 let isPlaying = false;
@@ -18,7 +18,7 @@ function parseGuestNameFromURL() {
       return rawName;
     }
   }
-  return "Con vợ thân mến";
+  return "Con vợ";
 }
 
 // Chạy ngay khi tải xong DOM
@@ -26,7 +26,9 @@ window.addEventListener("DOMContentLoaded", async () => {
   currentGuestName = parseGuestNameFromURL();
   document.getElementById("guest-name-preview").innerText = currentGuestName;
   document.getElementById("guest-name").innerText = currentGuestName;
-
+  if (document.getElementById("presence-guest-name")) {
+    document.getElementById("presence-guest-name").innerText = currentGuestName;
+  }
   try {
     const response = await fetch(
       `${API_BASE_URL}/guest?to=${encodeURIComponent(currentGuestName)}`,
