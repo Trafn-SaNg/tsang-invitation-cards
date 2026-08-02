@@ -9,41 +9,66 @@ let isPlaying = false;
 // 1. TỰ ĐỘNG GIẢI MÃ TÊN NGƯỜI NHẬN TỪ URL PARAMETER TỨC THÌ
 function parseGuestNameFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
-  const rawName = urlParams.get("to") || urlParams.get("name");
+  let rawName = urlParams.get("to") || urlParams.get("name");
 
   if (rawName) {
     try {
-      return decodeURIComponent(rawName);
+      rawName = decodeURIComponent(rawName);
     } catch (e) {
-      return rawName;
+      // Giữ nguyên rawName
     }
+    // Tự động chuyển dấu gạch ngang 'Huu-Duong' thành 'Huu Duong'
+    rawName = rawName.replace(/-/g, " ").trim();
+    if (rawName.length > 0) return rawName;
   }
   return "Con vợ";
 }
 
+// HÀM GÁN TÊN CHUẨN XÁC VÀO TẤT CẢ VỊ TRÍ GIAO DIỆN
+function updateGuestNameUI(name) {
+  const previewElem = document.getElementById("guest-name-preview");
+  const nameElem = document.getElementById("guest-name");
+  const presenceElem = document.getElementById("presence-guest-name");
+
+  if (previewElem) previewElem.innerText = name;
+  if (nameElem) nameElem.innerText = name;
+  if (presenceElem) presenceElem.innerText = name;
+}
+
 // Chạy ngay khi tải xong DOM
 window.addEventListener("DOMContentLoaded", async () => {
+  // Lấy tên từ URL và gán lập tức vào Giao diện
   currentGuestName = parseGuestNameFromURL();
-  document.getElementById("guest-name-preview").innerText = currentGuestName;
-  document.getElementById("guest-name").innerText = currentGuestName;
-  if (document.getElementById("presence-guest-name")) {
-    document.getElementById("presence-guest-name").innerText = currentGuestName;
-  }
+  updateGuestNameUI(currentGuestName);
+
+  // Gọi Backend lấy thông tin sự kiện (ĐẢM BẢO KHÔNG BỊ BẢN BACKEND ĐÈ MẤT TÊN)
   try {
     const response = await fetch(
       `${API_BASE_URL}/guest?to=${encodeURIComponent(currentGuestName)}`,
     );
     const result = await response.json();
 
-    if (result.success) {
+    if (result.success && result.data) {
       const data = result.data;
-      document.getElementById("host-name").innerHTML =
-        `${data.hostName} <br><span class="text-base text-amber-400 font-bold">${data.title}</span>`;
-      document.getElementById("host-degree").innerText = data.degree;
-      document.getElementById("host-university").innerText = data.university;
-      document.getElementById("event-time").innerText = data.time;
-      document.getElementById("event-location").innerText = data.location;
-      document.getElementById("event-map").href = data.mapUrl;
+      if (document.getElementById("host-name")) {
+        document.getElementById("host-name").innerHTML =
+          `${data.hostName} <br><span class="text-base text-amber-400 font-bold">${data.title}</span>`;
+      }
+      if (document.getElementById("host-degree")) {
+        document.getElementById("host-degree").innerText = data.degree;
+      }
+      if (document.getElementById("host-university")) {
+        document.getElementById("host-university").innerText = data.university;
+      }
+      if (document.getElementById("event-time")) {
+        document.getElementById("event-time").innerText = data.time;
+      }
+      if (document.getElementById("event-location")) {
+        document.getElementById("event-location").innerText = data.location;
+      }
+      if (document.getElementById("event-map")) {
+        document.getElementById("event-map").href = data.mapUrl;
+      }
     }
   } catch (error) {
     console.log("Dùng dữ liệu mặc định FE");
@@ -52,30 +77,38 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 // 2. NHẠC NỀN & MỞ THIỆP
 function playMusic() {
+  if (!music) return;
   music
     .play()
     .then(() => {
       isPlaying = true;
-      musicIcon.innerText = "🎵";
-      musicIcon.classList.add("spin-music");
+      if (musicIcon) {
+        musicIcon.innerText = "🎵";
+        musicIcon.classList.add("spin-music");
+      }
     })
     .catch((e) => console.log("Autoplay blocked:", e));
 }
 
 function toggleMusic() {
+  if (!music) return;
   if (isPlaying) {
     music.pause();
     isPlaying = false;
-    musicIcon.innerText = "🔇";
-    musicIcon.classList.remove("spin-music");
+    if (musicIcon) {
+      musicIcon.innerText = "🔇";
+      musicIcon.classList.remove("spin-music");
+    }
   } else {
     playMusic();
   }
 }
 
 function openInvitation() {
-  document.getElementById("envelope-screen").classList.add("hidden");
-  document.getElementById("invitation-screen").classList.remove("hidden");
+  const envelope = document.getElementById("envelope-screen");
+  const invitation = document.getElementById("invitation-screen");
+  if (envelope) envelope.classList.add("hidden");
+  if (invitation) invitation.classList.remove("hidden");
 
   playMusic();
   confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
@@ -88,9 +121,7 @@ function setAttendance(status) {
 // 3. GỬI LỜI CHÚC VỀ BACKEND MONGO
 async function submitRSVP(event) {
   event.preventDefault();
-  const wishesInput = document.getElementById("rsvp-wishes").value;
-
-  // Lấy chính xác tên người nhận hiện tại
+  const wishesInput = document.getElementById("rsvp-wishes")?.value || "";
   const guestNameToSend = currentGuestName || parseGuestNameFromURL();
 
   console.log("🚀 Đang gửi dữ liệu RSVP:", {
@@ -116,8 +147,8 @@ async function submitRSVP(event) {
     console.log("📩 Phản hồi từ Server Render:", result);
 
     if (result.success) {
-      document.getElementById("rsvp-form").classList.add("hidden");
-      document.getElementById("thank-you-msg").classList.remove("hidden");
+      document.getElementById("rsvp-form")?.classList.add("hidden");
+      document.getElementById("thank-you-msg")?.classList.remove("hidden");
       confetti({ particleCount: 80, spread: 70, origin: { y: 0.7 } });
     } else {
       alert("❌ Lỗi từ Server: " + result.message);
@@ -150,7 +181,6 @@ let lastTouchX = 0,
 window.addEventListener(
   "touchmove",
   (e) => {
-    // Không tạo sticker nếu đang mở Lightbox
     const modal = document.getElementById("lightbox-modal");
     if (modal && !modal.classList.contains("hidden")) return;
 
@@ -175,9 +205,7 @@ window.addEventListener("click", (e) => {
   spawnStickerAt(e.clientX, e.clientY);
 });
 
-// =========================================================================
-// 5. STICKER LINH VẬT & HIỆU ỨNG TILT 3D NHẸ NHÀNG (KHÔNG BỊ MÉO THIỆP)
-// =========================================================================
+// 5. STICKER LINH VẬT & HIỆU ỨNG TILT 3D NHẸ NHÀNG
 const cursorSticker = document.getElementById("cursor-sticker");
 let mouseX = 0,
   mouseY = 0,
@@ -210,17 +238,13 @@ if (window.innerWidth > 768) {
   }
   animateStickerFollower();
 
-  // 🕹️ TILT CARD 3D ĐÃ KHÓA GÓC XOAY (TỐI ĐA 4 ĐỘ - KHÔNG MÉO KHUNG)
   const cards = document.querySelectorAll(".tilt-card");
   cards.forEach((card) => {
     card.addEventListener("mousemove", (e) => {
       const rect = card.getBoundingClientRect();
-
-      // Tính vị trí chuột tương đối từ -0.5 đến 0.5 từ tâm thẻ
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
 
-      // Giới hạn góc xoay tối đa chỉ 4 độ (Cực kỳ nhẹ nhàng)
       const maxTilt = 4;
       const rotateX = (-y * maxTilt).toFixed(2);
       const rotateY = (x * maxTilt).toFixed(2);
@@ -228,7 +252,6 @@ if (window.innerWidth > 768) {
       card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
     });
 
-    // Reset phẳng hoàn toàn khi chuột rời khỏi khung
     card.addEventListener("mouseleave", () => {
       card.style.transform =
         "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
@@ -236,14 +259,12 @@ if (window.innerWidth > 768) {
   });
 }
 
-// =========================================================================
-// 6. 🖼️ LIGHTBOX SLIDER XEM ẢNH NÂNG CAO (NÚT BẤM, PHÍM MŨI TÊN, VUỐT ĐIỆN THOẠI)
-// =========================================================================
+// 6. 🖼️ LIGHTBOX SLIDER XEM ẢNH NÂNG CAO
 let currentImageIndex = 1;
 const TOTAL_IMAGES = 36;
 
 function getImagePath(index) {
-  return `assets/album/${index}.jpg`;
+  return `assets/album/memory${index}.jpg`;
 }
 
 function updateLightboxDisplay() {
@@ -268,18 +289,22 @@ function openLightbox(index) {
   const modal = document.getElementById("lightbox-modal");
   updateLightboxDisplay();
 
-  modal.classList.remove("hidden");
-  setTimeout(() => {
-    const modalImg = document.getElementById("lightbox-img");
-    if (modalImg) modalImg.classList.remove("scale-95");
-  }, 10);
+  if (modal) {
+    modal.classList.remove("hidden");
+    setTimeout(() => {
+      const modalImg = document.getElementById("lightbox-img");
+      if (modalImg) modalImg.classList.remove("scale-95");
+    }, 10);
+  }
 }
 
 function closeLightbox() {
   const modal = document.getElementById("lightbox-modal");
   const modalImg = document.getElementById("lightbox-img");
   if (modalImg) modalImg.classList.add("scale-95");
-  setTimeout(() => modal.classList.add("hidden"), 200);
+  setTimeout(() => {
+    if (modal) modal.classList.add("hidden");
+  }, 200);
 }
 
 function nextImage(e) {
@@ -296,7 +321,6 @@ function prevImage(e) {
   updateLightboxDisplay();
 }
 
-// A. ĐIỀU HƯỚNG BẰNG BÀN PHÍM (PC)
 window.addEventListener("keydown", (e) => {
   const modal = document.getElementById("lightbox-modal");
   if (!modal || modal.classList.contains("hidden")) return;
@@ -310,7 +334,6 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-// B. ĐIỀU HƯỚNG BẰNG VUỐT TAY TRÊN ĐIỆN THOẠI (SWIPE MOBILE)
 let touchStartX = 0;
 let touchEndX = 0;
 
@@ -337,15 +360,15 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function handleSwipe() {
-  const swipeThreshold = 40; // Khoảng cách tối thiểu để nhận diện vuốt
+  const swipeThreshold = 40;
   if (touchEndX < touchStartX - swipeThreshold) {
-    nextImage(); // Vuốt sang trái -> Ảnh tiếp theo
+    nextImage();
   } else if (touchEndX > touchStartX + swipeThreshold) {
-    prevImage(); // Vuốt sang phải -> Ảnh trước đó
+    prevImage();
   }
 }
 
-// C. TỰ ĐỘNG RENDER 36 ẢNH KỶ NIỆM TỪ THƯ MỤC assets/album/
+// TỰ ĐỘNG RENDER 36 ẢNH KỶ NIỆM TỪ THƯ MỤC assets/album/
 window.addEventListener("DOMContentLoaded", () => {
   const albumGrid = document.getElementById("album-grid");
   if (albumGrid) {

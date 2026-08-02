@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trafn Sang Graduation Invitation Card</title>
 
+    <!-- Open Graph (Đã sửa đường dẫn tuyệt đối chuẩn Messenger/Zalo/FB) -->
     <meta
       property="og:title"
       content="🎓 Trafn Sang graduation invitation card"
@@ -13,8 +14,22 @@
       property="og:description"
       content="Trân trọng kính mời con vợ đến tham dự lễ tốt nghiệp và chung vui cùng Trafn Sang!"
     />
-    <meta property="og:image" content="../assets/preview.jpg" />
+    <!-- Đường dẫn ảnh tuyệt đối bắt buộc để Messenger/Zalo hiện Banner to -->
+    <meta
+      property="og:image"
+      content="https://trafn-sang.github.io/tsang-invitation-cards/frontend/assets/preview.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://trafn-sang.github.io/tsang-invitation-cards/frontend/"
+    />
+    <link
+      rel="canonical"
+      href="https://trafn-sang.github.io/tsang-invitation-cards/frontend/"
+    />
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -166,13 +181,14 @@
               <b id="guest-name" class="text-amber-300 font-bold">Con vợ</b>,
             </p>
 
-            <!-- 🌟 CÂU NÓI TRANG TRỌNG CÁ NHÂN HÓA 🌟 -->
             <p
               class="font-quote text-amber-300 font-bold text-base sm:text-lg my-2.5 italic tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
             >
               ✨ "Sự hiện diện của
-              <span id="presence-guest-name">Con vợ</span> là niềm vui của
-              Sang!" ✨
+              <span id="presence-guest-name" class="text-amber-300 font-bold"
+                >Con vợ</span
+              >
+              là niềm vui của Sang!" ✨
             </p>
 
             <p
