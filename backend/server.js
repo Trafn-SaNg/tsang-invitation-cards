@@ -44,7 +44,7 @@ const Rsvp = mongoose.model("Rsvp", rsvpSchema);
 
 // API GUEST
 app.get("/api/guest", (req, res) => {
-  const guestName = req.query.to || "Con vợ thân mến";
+  const guestName = req.query.to || "Con vợ";
   res.json({
     success: true,
     data: {

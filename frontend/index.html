@@ -16,13 +16,31 @@
     <meta property="og:image" content="../assets/preview.jpg" />
     <meta property="og:type" content="website" />
 
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts Tốt Nghiệp Cao Cấp: Cinzel (Hoàng Gia), Cormorant Garamond (Nghệ Thuật), Montserrat (Modern) -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,400;1,600;1,700&family=Montserrat:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+      body {
+        font-family: "Montserrat", sans-serif;
+      }
+      .font-cinzel {
+        font-family: "Cinzel", serif;
+        letter-spacing: 0.08em;
+      }
+      .font-quote {
+        font-family: "Cormorant Garamond", serif;
+      }
+    </style>
   </head>
   <body
     class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4 relative select-none"
@@ -89,30 +107,32 @@
         </div>
 
         <p
-          class="text-amber-400 font-semibold tracking-widest uppercase text-xs mb-2"
+          class="font-cinzel text-amber-400 font-bold tracking-widest uppercase text-xs mb-2"
         >
           Lời Mời Đặc Biệt - Đặc Biệt Phải Đi =)))
         </p>
         <h1
-          class="text-2xl font-bold mb-4 bg-gradient-to-r from-slate-100 via-amber-100 to-amber-300 bg-clip-text text-transparent"
+          class="font-cinzel text-2xl sm:text-3xl font-extrabold mb-4 bg-gradient-to-r from-slate-100 via-amber-100 to-amber-300 bg-clip-text text-transparent leading-tight"
         >
           Con vợ có 1 phong thư mời tốt nghiệp!
         </h1>
 
-        <p class="text-slate-400 text-sm mb-8">
+        <p class="font-quote text-slate-300 text-lg sm:text-xl mb-8">
           Thân gửi:
           <span
             id="guest-name-preview"
-            class="text-amber-300 font-semibold underline underline-offset-4 decoration-amber-500/50"
-            >Con vợ thân mến</span
+            class="text-amber-300 font-bold underline underline-offset-4 decoration-amber-500/50"
+            >Con vợ</span
           >
         </p>
 
         <button
-          onclick="openInvitation()"
+          onclick="handleOpenInvitation()"
           class="w-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold py-4 px-6 rounded-2xl shadow-[0_0_20px_rgba(251,191,36,0.3)] transition-all duration-300 transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2"
         >
-          <span class="text-base">✉️ Mở Thiệp Ở Đây Này Con Vợ 😘😘🤩</span>
+          <span class="text-base font-bold"
+            >✉️ Mở Thiệp Ở Đây Này Con Vợ 😘😘🤩</span
+          >
         </button>
       </div>
 
@@ -126,28 +146,38 @@
           <div class="text-center border-b border-slate-800 pb-6">
             <span class="text-5xl mb-2 block animate-bounce">🎓</span>
             <p
-              class="text-amber-400 font-semibold uppercase tracking-widest text-xs mb-1"
+              class="font-cinzel text-amber-400 font-bold uppercase tracking-[0.25em] text-xs mb-1"
             >
               Lễ Tốt Nghiệp
             </p>
             <h2
-              class="text-3xl font-bold font-serif-custom bg-gradient-to-r from-amber-200 to-amber-500 bg-clip-text text-transparent"
+              class="font-cinzel text-3xl sm:text-4xl font-black bg-gradient-to-r from-amber-200 via-amber-300 to-amber-500 bg-clip-text text-transparent"
             >
-              THIỆP MỜI
+              THIỆP MỜI TỐT NGHIỆP CỦA TRẦN SANG
             </h2>
           </div>
 
           <!-- Lời nhắn -->
           <div
-            class="bg-slate-950/60 rounded-2xl p-4 border border-slate-800/80 text-center"
+            class="bg-slate-950/60 rounded-2xl p-4 sm:p-5 border border-slate-800/80 text-center"
           >
-            <p class="text-slate-300 text-sm">
+            <p class="font-quote text-slate-200 text-lg sm:text-xl">
               Thân gửi
-              <b id="guest-name" class="text-amber-300 text-base"
-                >Con vợ thân mến</b
-              >,
+              <b id="guest-name" class="text-amber-300 font-bold">Con vợ</b>,
             </p>
-            <p class="text-slate-400 text-xs mt-2 leading-relaxed italic">
+
+            <!-- 🌟 CÂU NÓI TRANG TRỌNG CÁ NHÂN HÓA 🌟 -->
+            <p
+              class="font-quote text-amber-300 font-bold text-base sm:text-lg my-2.5 italic tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+            >
+              ✨ "Sự hiện diện của
+              <span id="presence-guest-name">Con vợ</span> là niềm vui của
+              Sang!" ✨
+            </p>
+
+            <p
+              class="font-quote text-slate-300 text-sm sm:text-base mt-2 leading-relaxed italic opacity-90"
+            >
               “Tôi đã trưởng thành từ trong đau khổ. Tôi đứng lên từ đống tro
               tàn, từ một đống tro tàn nguội lạnh, như một bông hoa nở giữa sa
               mạc. Và tôi có được ngày hôm nay là do sự may mắn, cộng thêm một
@@ -163,17 +193,21 @@
           <div class="text-center">
             <h3
               id="host-name"
-              class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-amber-500"
+              class="font-cinzel text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-200 to-amber-500"
             >
               Trafn SaNg <br />
-              <span class="text-base text-amber-400 font-bold"
+              <span
+                class="font-sans text-sm sm:text-base text-amber-400 font-bold tracking-normal"
                 >Đz PRO VIP SIÊU CẤP VÔ ĐỊCH VŨ TRỤ</span
               >
             </h3>
-            <p id="host-degree" class="text-xs text-slate-300 mt-1 font-medium">
+            <p
+              id="host-degree"
+              class="text-xs sm:text-sm text-slate-300 mt-1 font-medium"
+            >
               Kĩ Sư Công Nghệ Thông Tin Hệ Đẳng Cấp 🥴
             </p>
-            <p id="host-university" class="text-xs text-slate-400">
+            <p id="host-university" class="text-xs text-slate-400 mt-0.5">
               Trường Đại học Công nghệ Đông Á
             </p>
           </div>
@@ -181,14 +215,16 @@
           <!-- Thời gian & Địa điểm -->
           <div class="space-y-3 text-sm">
             <div
-              class="flex items-start gap-3 bg-slate-800/50 p-3.5 rounded-2xl border border-slate-700/60"
+              class="flex items-start gap-3.5 bg-slate-800/50 p-3.5 rounded-2xl border border-slate-700/60"
             >
               <span class="text-2xl">📅</span>
               <div>
-                <p class="font-semibold text-slate-200">Thời gian</p>
+                <p class="font-bold text-slate-200 uppercase text-xs">
+                  Thời gian
+                </p>
                 <p
                   id="event-time"
-                  class="text-xs text-amber-300/90 font-medium mt-0.5"
+                  class="text-xs sm:text-sm text-amber-300 font-semibold mt-0.5"
                 >
                   13h30 – 16h30, Thứ 6, ngày 07/08/2026
                 </p>
@@ -196,14 +232,16 @@
             </div>
 
             <div
-              class="flex items-start gap-3 bg-slate-800/50 p-3.5 rounded-2xl border border-slate-700/60"
+              class="flex items-start gap-3.5 bg-slate-800/50 p-3.5 rounded-2xl border border-slate-700/60"
             >
               <span class="text-2xl">📍</span>
               <div>
-                <p class="font-semibold text-slate-200">Địa điểm</p>
+                <p class="font-bold text-slate-200 uppercase text-xs">
+                  Địa điểm
+                </p>
                 <p
                   id="event-location"
-                  class="text-xs text-slate-300 mt-0.5 leading-snug"
+                  class="text-xs sm:text-sm text-slate-300 mt-0.5 leading-snug"
                 >
                   Hội trường – Tầng 6 – Tòa nhà Việt Nam, <br />
                   Trường Đại học Công nghệ Đông Á
@@ -217,7 +255,7 @@
             id="event-map"
             href="https://maps.app.goo.gl/YwjxLEZrLsKVNkf97"
             target="_blank"
-            class="block text-center w-full bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 text-slate-200 text-xs font-bold py-3.5 rounded-2xl border border-slate-700 transition duration-300"
+            class="block text-center w-full bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 text-slate-200 text-xs font-bold py-3.5 rounded-2xl border border-slate-700 transition duration-300 shadow-md"
           >
             🗺️ Xem Bản Đồ Chỉ Đường
           </a>
@@ -226,10 +264,10 @@
           <form
             id="rsvp-form"
             onsubmit="submitRSVP(event)"
-            class="space-y-3 bg-slate-950/70 p-4 rounded-2xl border border-slate-800"
+            class="space-y-3 bg-slate-950/70 p-4 sm:p-5 rounded-2xl border border-slate-800"
           >
             <p
-              class="text-xs font-bold text-amber-400 text-center tracking-wider"
+              class="font-cinzel text-xs font-bold text-amber-400 text-center tracking-widest"
             >
               XÁC NHẬN THAM DỰ
             </p>
@@ -240,15 +278,15 @@
                 id="rsvp-wishes"
                 placeholder="Gửi lời chúc cho tsang ở đêy..."
                 required
-                class="w-full bg-slate-900 border border-slate-700 focus:border-amber-500 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none transition"
+                class="w-full bg-slate-900 border border-slate-700 focus:border-amber-500 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-100 focus:outline-none transition"
               />
             </div>
 
-            <div class="grid grid-cols-2 gap-2">
+            <div class="grid grid-cols-2 gap-2.5">
               <button
                 type="submit"
                 onclick="setAttendance('Tham dự')"
-                class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold text-xs py-3 rounded-xl transition"
+                class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold text-xs sm:text-sm py-3 rounded-xl transition shadow-md"
               >
                 Sẽ Đến <br />
                 Ngóng bữa giờ 🎉
@@ -256,7 +294,7 @@
               <button
                 type="submit"
                 onclick="setAttendance('Bận')"
-                class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs py-3 rounded-xl transition"
+                class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs sm:text-sm py-3 rounded-xl transition"
               >
                 Rất Tiếc Bận 🥵
               </button>
@@ -265,7 +303,7 @@
 
           <p
             id="thank-you-msg"
-            class="hidden text-center text-xs text-emerald-400 font-bold mt-3 animate-pulse"
+            class="hidden text-center text-xs sm:text-sm text-emerald-400 font-bold mt-3 animate-pulse"
           >
             ✅ Cảm ơn bạn! Lời nhắn đã gửi thành công cho Trafn SaNg 🥰
           </p>
@@ -278,30 +316,29 @@
           <div class="text-center mb-5">
             <span class="text-3xl mb-1 block">📸</span>
             <h3
-              class="text-lg font-bold bg-gradient-to-r from-amber-200 to-amber-500 bg-clip-text text-transparent uppercase tracking-wider"
+              class="font-cinzel text-lg sm:text-xl font-bold bg-gradient-to-r from-amber-200 via-amber-300 to-amber-500 bg-clip-text text-transparent uppercase tracking-wider"
             >
               MY MEMORIES ALBUM 🎓
             </h3>
-            <p class="text-slate-400 text-[11px] mt-1">
+            <p class="font-quote text-slate-300 text-sm mt-1 italic">
               All of you is a part of my memories!!!!!
             </p>
           </div>
 
           <!-- Lưới 36 Ảnh Kỷ Niệm Tự Động -->
           <div id="album-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-            <!-- 36 ảnh sẽ tự động hiển thị ở đây qua JS -->
+            <!-- 36 ảnh tự động hiển thị ở đây qua JS -->
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 🔍 MODAL LIGHTBOX XEM ẢNH SLIDER (NÚT BẤM + PHÍM + VUỐT MOBILE) -->
+    <!-- 🔍 MODAL LIGHTBOX XEM ẢNH SLIDER -->
     <div
       id="lightbox-modal"
       class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg hidden flex items-center justify-center p-4 select-none"
       onclick="closeLightbox()"
     >
-      <!-- Nút Đóng (Góc Trên Phải) -->
       <button
         onclick="closeLightbox()"
         class="absolute top-5 right-5 text-slate-300 hover:text-white text-3xl font-bold z-20 p-2 focus:outline-none"
@@ -309,7 +346,6 @@
         &times;
       </button>
 
-      <!-- Bộ Đếm Số Ảnh (Góc Trên Trái) -->
       <div
         id="lightbox-counter"
         class="absolute top-6 left-6 text-slate-300 font-semibold text-xs sm:text-sm bg-slate-800/80 px-3.5 py-1.5 rounded-full border border-slate-700 z-20 shadow-lg"
@@ -317,25 +353,22 @@
         1 / 36
       </div>
 
-      <!-- Nút Chuyển Ảnh Trái (PREV) -->
       <button
         onclick="prevImage(event)"
         class="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 text-white bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 border border-slate-700/80 p-3 sm:p-4 rounded-full transition-all duration-200 z-20 shadow-lg focus:outline-none"
-        title="Ảnh trước (Mũi tên trái)"
+        title="Ảnh trước"
       >
         ❮
       </button>
 
-      <!-- Nút Chuyển Ảnh Phải (NEXT) -->
       <button
         onclick="nextImage(event)"
         class="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 text-white bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 border border-slate-700/80 p-3 sm:p-4 rounded-full transition-all duration-200 z-20 shadow-lg focus:outline-none"
-        title="Ảnh tiếp (Mũi tên phải)"
+        title="Ảnh tiếp"
       >
         ❯
       </button>
 
-      <!-- Hiển Thị Ảnh Gốc -->
       <img
         id="lightbox-img"
         src=""
@@ -345,6 +378,58 @@
       />
     </div>
 
+    <!-- SCRIPT CHÍNH & SỰ KIỆN PHÁO GIẤY BẮN 2 BÊN HÔNG MÀN HÌNH -->
     <script src="js/main.js"></script>
+    <script>
+      // 🎆 HÀM PHUN PHÁO GIẤY 2 BÊN HÔNG MÀN HÌNH ĐỊNH KỲ (SIDE CANNONS)
+      let sideConfettiInterval = null;
+
+      function startSideConfetti() {
+        if (sideConfettiInterval) return;
+
+        // Bắn ngay lập tức đợt đầu
+        fireSideCannons();
+
+        // Tự động bắn lặp lại mỗi 2.5 giây ở 2 bên hông trống
+        sideConfettiInterval = setInterval(() => {
+          fireSideCannons();
+        }, 2500);
+      }
+
+      function fireSideCannons() {
+        // Pháo góc trái bắn sang phải
+        confetti({
+          particleCount: 20,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.65 },
+          colors: ["#f59e0b", "#fbbf24", "#fef08a", "#ffffff"],
+        });
+        // Pháo góc phải bắn sang trái
+        confetti({
+          particleCount: 20,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.65 },
+          colors: ["#f59e0b", "#fbbf24", "#fef08a", "#ffffff"],
+        });
+      }
+
+      // Xử lý mở thiệp + khởi chạy pháo giấy 2 bên hông
+      function handleOpenInvitation() {
+        if (typeof openInvitation === "function") {
+          openInvitation();
+        } else {
+          document.getElementById("envelope-screen").classList.add("hidden");
+          document
+            .getElementById("invitation-screen")
+            .classList.remove("hidden");
+          if (typeof playMusic === "function") playMusic();
+        }
+
+        // Khởi động pháo giấy bắn 2 bên hông liên tục
+        startSideConfetti();
+      }
+    </script>
   </body>
 </html>

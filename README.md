@@ -26,3 +26,5 @@ https://trafn-sang.github.io/tsang-invitation-cards/frontend/?to= <tên người
 # xem lời chúc, accept or reject
 
 https://tsang-invitation-cards.onrender.com/api/rsvp-list
+
+** chú ý đường dẫn render và mongodb**
