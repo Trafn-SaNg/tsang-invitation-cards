@@ -368,7 +368,25 @@ function handleSwipe() {
   }
 }
 
-// TỰ ĐỘNG RENDER 36 ẢNH KỶ NIỆM TỪ THƯ MỤC assets/album/
+// TỰ ĐỘNG RENDER 36 ẢNH KỶ NIỆM VỚI CƠ CHẾ TỰ SỬA LỖI ĐUÔI ẢNH
+function getImagePath(index) {
+  return `assets/album/memory${index}.jpg`;
+}
+
+// Hàm tự động thử các kiểu đuôi ảnh nếu file bị lỗi (.JPG in hoa, .png, 1.jpg...)
+function handleAlbumImgError(img, index) {
+  if (!img.dataset.retry) {
+    img.dataset.retry = "1";
+    img.src = `assets/album/memory${index}.JPG`; // Thử đuôi .JPG in hoa
+  } else if (img.dataset.retry === "1") {
+    img.dataset.retry = "2";
+    img.src = `assets/album/${index}.jpg`; // Thử tên dạng 1.jpg
+  } else if (img.dataset.retry === "2") {
+    img.dataset.retry = "3";
+    img.src = `assets/album/memory${index}.png`; // Thử đuôi .png
+  }
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   const albumGrid = document.getElementById("album-grid");
   if (albumGrid) {
@@ -377,7 +395,7 @@ window.addEventListener("DOMContentLoaded", () => {
       const imgPath = getImagePath(i);
       albumHTML += `
         <div class="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700/60 cursor-pointer" onclick="openLightbox(${i})">
-          <img src="${imgPath}" alt="Kỷ niệm ${i}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+          <img src="${imgPath}" alt="Kỷ niệm ${i}" loading="lazy" onerror="handleAlbumImgError(this, ${i})" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
         </div>
       `;
     }
