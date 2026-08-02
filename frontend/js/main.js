@@ -259,12 +259,38 @@ if (window.innerWidth > 768) {
   });
 }
 
-// 6. 🖼️ LIGHTBOX SLIDER XEM ẢNH NÂNG CAO
+// =========================================================================
+// 6. 🖼️ LIGHTBOX SLIDER & TỰ ĐỘNG BẮT ĐÚNG ĐƯỜNG DẪN ẢNH ALBUM
+// =========================================================================
 let currentImageIndex = 1;
 const TOTAL_IMAGES = 36;
 
+// HÀM TỰ ĐỘNG TẠO ĐƯỜNG DẪN ẢNH CHUẨN XÁC CHO CẢ LOCAL LẪN GITHUB PAGES
 function getImagePath(index) {
+  // Nếu đang chạy trên web GitHub Pages
+  if (window.location.hostname.includes("github.io")) {
+    return `https://trafn-sang.github.io/tsang-invitation-cards/frontend/assets/album/memory${index}.jpg`;
+  }
+  // Nếu đang chạy ở máy tính (Localhost / Live Server)
   return `assets/album/memory${index}.jpg`;
+}
+
+// Hàm tự sửa lỗi nếu đuôi ảnh bị lệch (.JPG in hoa hoặc dạng 1.jpg)
+function handleAlbumImgError(img, index) {
+  console.error(`❌ Không tìm thấy ảnh tại: ${img.src}`);
+  const isGithub = window.location.hostname.includes("github.io");
+
+  if (!img.dataset.retry) {
+    img.dataset.retry = "1";
+    img.src = isGithub
+      ? `https://trafn-sang.github.io/tsang-invitation-cards/frontend/assets/album/memory${index}.JPG`
+      : `assets/album/memory${index}.JPG`;
+  } else if (img.dataset.retry === "1") {
+    img.dataset.retry = "2";
+    img.src = isGithub
+      ? `https://trafn-sang.github.io/tsang-invitation-cards/frontend/assets/album/${index}.jpg`
+      : `assets/album/${index}.jpg`;
+  }
 }
 
 function updateLightboxDisplay() {
@@ -368,25 +394,7 @@ function handleSwipe() {
   }
 }
 
-// TỰ ĐỘNG RENDER 36 ẢNH KỶ NIỆM VỚI CƠ CHẾ TỰ SỬA LỖI ĐUÔI ẢNH
-function getImagePath(index) {
-  return `assets/album/memory${index}.jpg`;
-}
-
-// Hàm tự động thử các kiểu đuôi ảnh nếu file bị lỗi (.JPG in hoa, .png, 1.jpg...)
-function handleAlbumImgError(img, index) {
-  if (!img.dataset.retry) {
-    img.dataset.retry = "1";
-    img.src = `assets/album/memory${index}.JPG`; // Thử đuôi .JPG in hoa
-  } else if (img.dataset.retry === "1") {
-    img.dataset.retry = "2";
-    img.src = `assets/album/${index}.jpg`; // Thử tên dạng 1.jpg
-  } else if (img.dataset.retry === "2") {
-    img.dataset.retry = "3";
-    img.src = `assets/album/memory${index}.png`; // Thử đuôi .png
-  }
-}
-
+// TỰ ĐỘNG RENDER 36 ẢNH KỶ NIỆM TỪ THƯ MỤC assets/album/
 window.addEventListener("DOMContentLoaded", () => {
   const albumGrid = document.getElementById("album-grid");
   if (albumGrid) {
